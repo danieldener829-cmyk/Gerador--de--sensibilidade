@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF Sensi Generator</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #0f0f0f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .box {
+            background: #1b1b1b;
+            width: 420px;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px #00ff66;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #00ff66;
+            font-size: 26px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            background: #2d2d2d;
+            color: #fff;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        input:focus,
+        select:focus {
+            outline: 2px solid #00ff66;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #00ff66;
+            color: #000;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 5px;
+        }
+
+        button:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 20px #00ff66;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        #app {
+            display: none;
+        }
+
+        .result {
+            margin-top: 20px;
+            background: #222;
+            padding: 18px;
+            border-radius: 10px;
+            line-height: 2;
+            font-size: 14px;
+        }
+
+        .result b {
+            color: #00ff66;
+        }
+
+        .error-msg {
+            color: #ff4444;
+            font-size: 13px;
+            text-align: center;
+            margin-top: 8px;
+            display: none;
+            padding: 8px;
+            background: #2a1a1a;
+            border-radius: 6px;
+            border-left: 3px solid #ff4444;
+        }
+
+        .error-msg.show {
+            display: block;
+        }
+
+        #login input.error {
+            border: 2px solid #ff4444;
+            background: #2a1a1a;
+        }
+
+        .back-btn {
+            background: #555;
+            color: #fff;
+            margin-top: 10px;
+            font-size: 13px;
+            padding: 8px;
+        }
+
+        .back-btn:hover {
+            background: #666;
+            box-shadow: none;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #222;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .status-bar .valid {
+            color: #00ff66;
+        }
+
+        .status-bar .invalid {
+            color: #ff4444;
+        }
+
+        .key-hint {
+            color: #666;
+            font-size: 12px;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        .key-hint span {
+            display: none;
+        }
+
+        /* Estilos para o injetor */
+        .injetor-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #222;
+            border-radius: 10px;
+            border: 1px solid #333;
+        }
+
+        .injetor-section h3 {
+            color: #00ff66;
+            margin-bottom: 10px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .injetor-status {
+            text-align: center;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 6px;
+            font-size: 13px;
+            display: none;
+        }
+
+        .injetor-status.show {
+            display: block;
+        }
+
+        .injetor-status.loading {
+            background: #1a2a1a;
+            color: #88ff88;
+            border: 1px solid #00ff66;
+        }
+
+        .injetor-status.success {
+            background: #1a2a1a;
+            color: #00ff66;
+            border: 1px solid #00ff66;
+        }
+
+        .injetor-status.error {
+            background: #2a1a1a;
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+
+        .btn-injetar {
+            background: #ff6600;
+            color: #fff;
+            font-size: 15px;
+            padding: 14px;
+        }
+
+        .btn-injetar:hover {
+            background: #ff7700;
+            box-shadow: 0 0 20px #ff6600;
+        }
+
+        .btn-injetar:disabled {
+            background: #553322;
+            box-shadow: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #333;
+            border-radius: 4px;
+            margin-top: 10px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .progress-bar.show {
+            display: block;
+        }
+
+        .progress-bar .fill {
+            height: 100%;
+            background: #00ff66;
+            width: 0%;
+            transition: width 0.3s;
+            border-radius: 4px;
+        }
+
+        .injetor-info {
+            color: #888;
+            font-size: 11px;
+            text-align: center;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+
+        <!-- TELA DE LOGIN -->
+        <div id="login">
+            <h1>🔑 LOGIN</h1>
+            <p class="subtitle">FF Sensi Generator</p>
+
+            <input type="text" id="key" placeholder="Digite sua key" autocomplete="off">
+            <div class="error-msg" id="errorMsg">❌ Key inválida! Tente novamente.</div>
+
+            <button onclick="entrar()">Entrar</button>
+
+            <p class="key-hint">
+                💡 Keys válidas: 
+                <span onclick="preencherKey('admin')">admin</span> •
+                <span onclick="preencherKey('ffsensi')">ffsensi</span> •
+                <span onclick="preencherKey('2024')">2024</span> •
+                <span onclick="preencherKey('free')">free</span>
+            </p>
+        </div>
+
+        <!-- TELA PRINCIPAL -->
+        <div id="app">
+            <div class="status-bar">
+                <span>✅ Logado</span>
+                <span style="color:#00ff66;">●</span>
+            </div>
+
+            <h1>FF SENSI</h1>
+
+            <select id="dpi">
+                <option value="400">400 DPI</option>
+                <option value="500">500 DPI</option>
+                <option value="600" selected>600 DPI</option>
+                <option value="700">700 DPI</option>
+                <option value="800">800 DPI</option>
+            </select>
+
+            <select id="estilo">
+                <option value="Capa">Capa</option>
+                <option value="Rush">Rush</option>
+                <option value="Precisão">Precisão</option>
+                <option value="Geral" selected>Geral</option>
+            </select>
+
+            <button onclick="gerar()">🎯 Gerar Sensibilidade</button>
+
+            <div class="result" id="resultado">
+                <i style="color:#666;">Clique em "Gerar Sensibilidade" para ver os valores</i>
+            </div>
+
+            <!-- SEÇÃO INJETOR -->
+            <div class="injetor-section">
+                <h3>🚀 INJETAR NO FREE FIRE</h3>
+                
+                <div class="injetor-status" id="injetorStatus"></div>
+                
+                <button class="btn-injetar" id="btnInjetar" onclick="injetarFF()">
+                    ⚡ INJETAR E OTIMIZAR
+                </button>
+                
+                <div class="progress-bar" id="progressBar">
+                    <div class="fill" id="progressFill"></div>
+                </div>
+                
+                <p class="injetor-info">
+                    🔧 Limpeza de cache • Otimização de memória • Aumento de FPS
+                </p>
+            </div>
+
+            <button class="back-btn" onclick="sair()">🔙 Sair</button>
+        </div>
+
+    </div>
+
+    <script>
+        // ============ SISTEMA DE KEYS VÁLIDAS ============
+        const VALID_KEYS = [
+            'admin',
+            'ffsensi',
+            '2024',
+            'free',
+            'teste',
+            '123456',
+            'sensi',
+            'gerador',
+            'ff',
+            'garena',
+            'master',
+            'pro',
+            'vip',
+            'gold',
+            'beta'
+        ];
+
+        // ============ FUNÇÕES DE LOGIN ============
+        function entrar() {
+            const keyInput = document.getElementById('key');
+            const errorMsg = document.getElementById('errorMsg');
+            const key = keyInput.value.trim();
+
+            keyInput.classList.remove('error');
+            errorMsg.classList.remove('show');
+
+            if (key.length === 0) {
+                keyInput.classList.add('error');
+                errorMsg.textContent = '❌ Digite uma key.';
+                errorMsg.classList.add('show');
+                keyInput.focus();
+                return;
+            }
+
+            const isValid = VALID_KEYS.some(validKey =>
+                validKey.toLowerCase() === key.toLowerCase()
+            );
+
+            if (isValid) {
+                document.getElementById('login').style.display = 'none';
+                document.getElementById('app').style.display = 'block';
+                document.getElementById('resultado').innerHTML = `
+                    <i style="color:#666;">Clique em "Gerar Sensibilidade" para ver os valores</i>
+                `;
+                keyInput.value = '';
+            } else {
+                keyInput.classList.add('error');
+                errorMsg.textContent = '❌ Key inválida! Tente novamente.';
+                errorMsg.classList.add('show');
+                keyInput.value = '';
+                keyInput.focus();
+            }
+        }
+
+        function sair() {
+            document.getElementById('app').style.display = 'none';
+            document.getElementById('login').style.display = 'block';
+            document.getElementById('key').value = '';
+            document.getElementById('key').classList.remove('error');
+            document.getElementById('errorMsg').classList.remove('show');
+            // Resetar injetor se estiver aberto
+            resetarInjetor();
+        }
+
+        function preencherKey(key) {
+            document.getElementById('key').value = key;
+            document.getElementById('key').classList.remove('error');
+            document.getElementById('errorMsg').classList.remove('show');
+            document.getElementById('key').focus();
+        }
+
+        // ============ GERADOR DE SENSIBILIDADE ============
+        function rand(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function gerar() {
+            const dpi = document.getElementById('dpi').value;
+            const estilo = document.getElementById('estilo').value;
+
+            let valores = {};
+
+            switch (estilo) {
+                case 'Capa':
+                    valores = {
+                        geral: rand(120, 200),
+                        redDot: rand(100, 200),
+                        mira2x: rand(90, 190),
+                        mira4x: rand(80, 180),
+                        awm: rand(40, 80),
+                        olhadinha: rand(130, 200)
+                    };
+                    break;
+                case 'Rush':
+                    valores = {
+                        geral: rand(150, 200),
+                        redDot: rand(130, 200),
+                        mira2x: rand(110, 190),
+                        mira4x: rand(90, 180),
+                        awm: rand(50, 90),
+                        olhadinha: rand(150, 200)
+                    };
+                    break;
+                case 'Precisão':
+                    valores = {
+                        geral: rand(90, 140),
+                        redDot: rand(80, 130),
+                        mira2x: rand(70, 120),
+                        mira4x: rand(60, 110),
+                        awm: rand(20, 50),
+                        olhadinha: rand(100, 150)
+                    };
+                    break;
+                default:
+                    valores = {
+                        geral: rand(90, 200),
+                        redDot: rand(80, 200),
+                        mira2x: rand(70, 190),
+                        mira4x: rand(60, 180),
+                        awm: rand(20, 80),
+                        olhadinha: rand(100, 200)
+                    };
+            }
+
+            document.getElementById('resultado').innerHTML = `
+                <b>📊 DPI:</b> ${dpi}<br>
+                <b>🎯 Estilo:</b> ${estilo}<br><br>
+                <b>🎯 Geral:</b> ${valores.geral}<br>
+                <b>🔴 Red Dot:</b> ${valores.redDot}<br>
+                <b>🔵 Mira 2x:</b> ${valores.mira2x}<br>
+                <b>🟢 Mira 4x:</b> ${valores.mira4x}<br>
+                <b>🟣 AWM:</b> ${valores.awm}<br>
+                <b>🟡 Olhadinha:</b> ${valores.olhadinha}
+            `;
+        }
+
+        // ============ INJETOR ============
+        let injetando = false;
+
+        function resetarInjetor() {
+            injetando = false;
+            const status = document.getElementById('injetorStatus');
+            const btn = document.getElementById('btnInjetar');
+            const progress = document.getElementById('progressBar');
+            const fill = document.getElementById('progressFill');
+            
+            status.className = 'injetor-status';
+            status.style.display = 'none';
+            btn.disabled = false;
+            btn.textContent = '⚡ INJETAR E OTIMIZAR';
+            progress.classList.remove('show');
+            fill.style.width = '0%';
+        }
+
+        function atualizarProgresso(valor, mensagem) {
+            const fill = document.getElementById('progressFill');
+            const status = document.getElementById('injetorStatus');
+            fill.style.width = valor + '%';
+            
+            if (mensagem) {
+                status.textContent = mensagem;
+                status.className = 'injetor-status show loading';
+            }
+        }
+
+        function injetarFF() {
+            if (injetando) return;
+            
+            const btn = document.getElementById('btnInjetar');
+            const status = document.getElementById('injetorStatus');
+            const progress = document.getElementById('progressBar');
+            
+            // Desabilitar botão e mostrar progresso
+            injetando = true;
+            btn.disabled = true;
+            btn.textContent = '🔄 INJETANDO...';
+            progress.classList.add('show');
+            status.style.display = 'block';
+            
+            // Simular processo de injeção com etapas
+            const etapas = [
+                { progresso: 10, mensagem: '🔍 Verificando sistema...' },
+                { progresso: 25, mensagem: '🧹 Limpando cache do Free Fire...' },
+                { progresso: 40, mensagem: '📦 Otimizando arquivos temporários...' },
+                { progresso: 55, mensagem: '⚙️ Configurando prioridade de memória...' },
+                { progresso: 70, mensagem: '🚀 Aplicando otimizações de FPS...' },
+                { progresso: 85, mensagem: '🔗 Conectando ao servidor...' },
+                { progresso: 95, mensagem: '✅ Preparando para abrir o Free Fire...' },
+            ];
+            
+            let etapaAtual = 0;
+            
+            function proximaEtapa() {
+                if (etapaAtual < etapas.length) {
+                    const etapa = etapas[etapaAtual];
+                    atualizarProgresso(etapa.progresso, etapa.mensagem);
+                    etapaAtual++;
+                    setTimeout(proximaEtapa, 800);
+                } else {
+                    // Finalizado
+                    finalizarInjecao();
+                }
+            }
+            
+            function finalizarInjecao() {
+                // 100% completo
+                atualizarProgresso(100, '✅ Injeção concluída com sucesso!');
+                
+                // Mudar status para sucesso
+                status.className = 'injetor-status show success';
+                status.textContent = '✅ Free Fire otimizado e injetado com sucesso!';
+                
+                btn.textContent = '✅ ABRIR FREE FIRE';
+                btn.className = 'btn-injetar';
+                btn.style.background = '#00cc66';
+                btn.disabled = false;
+                
+                // Mostrar efeito de "abrir jogo"
+                setTimeout(() => {
+                    status.textContent = '🎮 Abrindo Free Fire...';
+                    setTimeout(() => {
+                        status.textContent = '✅ Free Fire aberto! Otimizações aplicadas.';
+                        // Resetar botão depois de um tempo
+                        setTimeout(() => {
+                            btn.textContent = '⚡ REINJETAR';
+                            btn.style.background = '#ff6600';
+                            // Efeito de "jogo aberto"
+                            abrirFreeFire();
+                        }, 1500);
+                    }, 1000);
+                }, 500);
+                
+                injetando = false;
+            }
+            
+            // Iniciar o processo
+            setTimeout(proximaEtapa, 500);
+        }
+
+        // Função que "abre" o Free Fire (simulação)
+        function abrirFreeFire() {
+            // Criar notificação visual
+            const status = document.getElementById('injetorStatus');
+            const notificacao = document.createElement('div');
+            notificacao.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: #1b1b1b;
+                padding: 40px 60px;
+                border-radius: 15px;
+                box-shadow: 0 0 50px #00ff66;
+                text-align: center;
+                z-index: 9999;
+                animation: pulse 1s ease-in-out;
+            `;
+            
+            notificacao.innerHTML = `
+                <h2 style="color: #00ff66; font-size: 32px;">🎮 FREE FIRE</h2>
+                <p style="color: #888; margin-top: 10px;">Otimizado e aberto com sucesso!</p>
+                <p style="color: #00ff66; font-size: 14px; margin-top: 15px;">
+                    🔥 FPS otimizados • Cache limpo • Memória liberada
+                </p>
+                <button onclick="this.parentElement.remove()" style="
+                    margin-top: 20px;
+                    padding: 10px 30px;
+                    background: #00ff66;
+                    border: none;
+                    border-radius: 8px;
+                    color: #000;
+                    font-weight: bold;
+                    cursor: pointer;
+                ">Fechar</button>
+            `;
+            
+            document.body.appendChild(notificacao);
+            
+            // Adicionar keyframes de animação
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes pulse {
+                    0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+                    50% { transform: translate(-50%, -50%) scale(1.05); }
+                    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Remover notificação após 5 segundos
+            setTimeout(() => {
+                if (document.body.contains(notificacao)) {
+                    notificacao.remove();
+                }
+            }, 5000);
+        }
+
+        // ============ PERMITIR ENTER NO LOGIN ============
+        document.getElementById('key').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                entrar();
+            }
+        });
+
+        // ============ CARREGAR KEYS SALVAS ============
+        function carregarKeysSalvas() {
+            const saved = localStorage.getItem('ffsensi_valid_keys');
+            if (saved) {
+                try {
+                    const extraKeys = JSON.parse(saved);
+                    if (Array.isArray(extraKeys)) {
+                        VALID_KEYS.push(...extraKeys);
+                    }
+                } catch (e) {}
+            }
+        }
+        carregarKeysSalvas();
+
+        console.log('🔑 Sistema de keys ativo');
+        console.log('🚀 Injetor Free Fire pronto');
+    </script>
+
+</body>
+</html>
