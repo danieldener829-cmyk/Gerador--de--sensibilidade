@@ -1,0 +1,5 @@
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Scripts para rio rise é mods para blood strick","url":"https:&#x2F;&#x2F;ghostmodzytt.sharpify.online","logo":"https:&#x2F;&#x2F;cdn.sharpify.com.br&#x2F;sharpify-public&#x2F;b6808a92-b7c3-4a45-a73c-0d1e27271b95.png"}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Scripts para rio rise é mods para blood strick","url":"https:&#x2F;&#x2F;ghostmodzytt.sharpify.online","potentialAction":{"@type":"SearchAction","target":"https:&#x2F;&#x2F;ghostmodzytt.sharpify.online/catalog/all-products?productTitle={search_term_string}","query-input":"required name=search_term_string"}}</script>
+<script src="https:&#x2F;&#x2F;cdn.sharpify.com.br&#x2F;sharpify-public&#x2F;assets&#x2F;templates&#x2F;js&#x2F;react-query.production.js"></script>
+<script src="https:&#x2F;&#x2F;cdn.socket.io&#x2F;4.7.5&#x2F;socket.io.min.js" crossorigin></script>
+<script src="http://localhost:4000/public/sharpify-api.js" crossorigin></script>
