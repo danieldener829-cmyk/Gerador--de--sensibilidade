@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <style>
+            :root {
+                --background: 8 8 10;
+                --foreground: 250, 250, 250;
+                --card: 8 8 10;
+                --secondary: 9 9 11;
+                --card-foreground: 250, 250, 250;
+                --popover: 9, 10, 13;
+                --popover-foreground: 250, 250, 250;
+                --primary: 41 120 255;
+                --primary-foreground: 255, 255, 255;
+                --secondary-foreground: 250 250 250;
+                --muted: 26 26 27;
+                --muted-foreground: 165, 165, 186;
+                --accent: 31 31 34;
+                --accent-foreground: 250, 250, 250;
+                --destructive: 255 72 72;
+                --destructive-foreground: 250 250 250;
+                --border: 26 26 27;
+                --input: 18, 19, 23;
+                --radius: 0.4rem;
+                --ring: var(--primary);
+                --chart-1: 38, 102, 229;
+                --chart-5: 51, 184, 138;
+                --chart-3: 255, 153, 51;
+                --chart-4: 174, 111, 232;
+                --chart-2: 255, 68, 102;
+            }
+        </style>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="pt_BR" />
+        <meta property="og:title" content="Página não encontrada" />
+        <meta
+            property="og:site_name"
+            content="Página não encontrada"
+        />
+        <meta property="og:description" content="" />
+        <meta property="og:image" content="https:&#x2F;&#x2F;cdn.sharpify.com.br&#x2F;sharpify-public&#x2F;b6808a92-b7c3-4a45-a73c-0d1e27271b95.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="627" />
+        <title>Página não encontrada</title>
+        <meta name="description" content="" />
+        <link rel="icon" href="https:&#x2F;&#x2F;cdn.sharpify.com.br&#x2F;sharpify-public&#x2F;b6808a92-b7c3-4a45-a73c-0d1e27271b95.png" />
+
+        <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;display=swap"
+            rel="stylesheet"
+        />
+
+        <script>
+
+            tailwind.config = {
+                theme: {
+                    container: { center: true, padding: "2rem", screens: { "2xl": "1400px" } },
+                    extend: {
+
+                        colors: {
+                            border: "rgb(var(--border))",
+                            input: "rgb(var(--input))",
+                            ring: "rgb(var(--ring))",
+                            background: "rgb(var(--background))",
+                            foreground: "rgb(var(--foreground))",
+                            ["blue-light"]: "#5A76E8",
+                            ["blue-dark"]: "#232C85",
+                            primary: {
+                                DEFAULT: "rgb(var(--primary))",
+                                foreground: "rgb(var(--primary-foreground))",
+                            },
+                            secondary: {
+                                DEFAULT: "rgb(var(--secondary))",
+                                foreground: "rgb(var(--secondary-foreground))",
+                            },
+                            destructive: {
+                                DEFAULT: "rgb(var(--destructive))",
+                                foreground: "rgb(var(--destructive-foreground))",
+                            },
+                            muted: { DEFAULT: "rgb(var(--muted))", foreground: "rgb(var(--muted-foreground))" },
+                            accent: {
+                                DEFAULT: "rgb(var(--accent))",
+                                foreground: "rgb(var(--accent-foreground))",
+                            },
+                            popover: {
+                                DEFAULT: "rgb(var(--popover))",
+                                foreground: "rgb(var(--popover-foreground))",
+                            },
+                            card: { DEFAULT: "rgb(var(--card))", foreground: "rgb(var(--card-foreground))" },
+                        },
+                        borderRadius: {
+                            lg: "var(--radius)",
+                            md: "calc(var(--radius) - 2px)",
+                            sm: "calc(var(--radius) - 10px)",
+                        },
+
+                    },
+                },
+                plugins: [],
+            }
+        </script>
+    </head>
+    <body
+        class="bg-background text-foreground !pointer-events-auto h-screen"
+        style="
+        font-family:'Space Grotesk', sans-serif;
+
+
+    "
+    >
+        <div class="w-full h-full flex items-center justify-center">
+            <div class="flex flex-col justify-center gap-4 justify">
+                <div class="space-y-2">
+                    <div class="font-bold text-2xl text-center">Pagina não encontrada</div>
+                    <span class="font-semibold text-sm text-muted-foreground text-center"
+                        >Parece que você não encontrou oque desejava, volte a página inicial e
+                        encontre!</span
+                    >
+                </div>
+
+                <a href="/" class="flex justify-center">
+                    <button
+                        class="border border-border bg-primary hover:bg-primary/60 p-2 rounded-lg"
+                    >
+                        Voltar para o inicio
+                    </button>
+                </a>
+            </div>
+        </div>
+    </body>
+</html>
